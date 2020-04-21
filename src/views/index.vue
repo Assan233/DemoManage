@@ -30,7 +30,7 @@ export default {
             placeholder: "请输入名称",
             type: "", // 表单组件名称, 如. textarea
             clearable: true,
-            disabled: false,
+            border: true,
             maxlength: false,
             minlength: false,
             autosize: false,

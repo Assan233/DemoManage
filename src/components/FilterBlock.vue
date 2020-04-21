@@ -24,12 +24,23 @@
           $emit('change', filterData, filterData[item.key], item.key, index)
         "
       >
-        <el-radio
-          v-for="option in item.options"
-          :key="option.label"
-          :label="option.value"
-          >{{ option.label }}</el-radio
-        >
+        <template v-if="item.optionType === 'button'">
+          <el-radio-button
+            v-for="option in item.options"
+            :key="option.label"
+            :label="option.value"
+            >{{ option.label }}</el-radio-button
+          >
+        </template>
+
+        <template v-else>
+          <el-radio
+            v-for="option in item.options"
+            :key="option.label"
+            :label="option.value"
+            >{{ option.label }}</el-radio
+          >
+        </template>
       </el-radio-group>
       <h3>
         {{ filterData[item.key] }}
@@ -77,14 +88,14 @@ export default {
         this.$set(this.filterData, item.key, null);
         // this.filterData[item.key] = null;
       });
-    },
-    eventHappened(key) {
-      console.log(key);
-      // console.log(this.filterData[key]);
-      // console.log(this.dataJson[0].config.event.change);
-      // console.log(self);
-      this.dataJson[0].config.event.change(key);
     }
+    // eventHappened(key) {
+    //   console.log(key);
+    //   // console.log(this.filterData[key]);
+    //   // console.log(this.dataJson[0].config.event.change);
+    //   // console.log(self);
+    //   this.dataJson[0].config.event.change(key);
+    // }
   }
 };
 </script>
