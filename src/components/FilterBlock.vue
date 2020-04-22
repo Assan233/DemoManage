@@ -6,6 +6,7 @@
       class="filter-item"
     >
       <div class="item-label">{{ item.label }}</div>
+      <!-- input -->
       <el-input
         v-if="item.type === 'el-input'"
         v-model="filterData[item.key]"
@@ -15,6 +16,8 @@
           $emit('change', filterData, filterData[item.key], item.key, index)
         "
       ></el-input>
+
+      <!-- radio-->
       <el-radio-group
         v-else-if="item.type === 'el-radio-group'"
         v-model="filterData[item.key]"
@@ -28,8 +31,8 @@
           <el-radio-button
             v-for="option in item.options"
             :key="option.label"
-            :label="option.value"
-            >{{ option.label }}</el-radio-button
+            v-bind="option"
+            >{{ option.name }}</el-radio-button
           >
         </template>
 
@@ -37,11 +40,68 @@
           <el-radio
             v-for="option in item.options"
             :key="option.label"
-            :label="option.value"
-            >{{ option.label }}</el-radio
+            v-bind="option"
+            >{{ option.name }}</el-radio
           >
         </template>
       </el-radio-group>
+
+      <!-- checkbox-->
+      <el-checkbox-group
+        v-else-if="item.type === 'el-checkbox-group'"
+        v-model="filterData[item.key]"
+        v-bind="item.config"
+        class="item-input"
+        @change="
+          $emit('change', filterData, filterData[item.key], item.key, index)
+        "
+      >
+        <template v-if="item.optionType === 'button'">
+          <el-checkbox-button
+            v-for="option in item.options"
+            :key="option.label"
+            v-bind="option"
+            >{{ option.name }}</el-checkbox-button
+          >
+        </template>
+
+        <template v-else>
+          <el-checkbox
+            v-for="option in item.options"
+            :key="option.label"
+            v-bind="option"
+            >{{ option.name }}</el-checkbox
+          >
+        </template>
+      </el-checkbox-group>
+      <!-- input-number -->
+      <el-input-number
+        v-else-if="item.type === 'el-input-number'"
+        v-model="filterData[item.key]"
+        v-bind="item.config"
+        class="item-input"
+        @change="
+          $emit('change', filterData, filterData[item.key], item.key, index)
+        "
+      ></el-input-number>
+
+      <!-- select -->
+      <el-select
+        v-else-if="item.type === 'el-select'"
+        v-model="filterData[item.key]"
+        v-bind="item.config"
+        class="item-input"
+        @change="
+          $emit('change', filterData, filterData[item.key], item.key, index)
+        "
+      >
+        <el-option
+          v-for="option in item.options"
+          :key="option.label"
+          v-bind="option"
+        ></el-option>
+      </el-select>
+
       <h3>
         {{ filterData[item.key] }}
       </h3>
@@ -85,7 +145,9 @@ export default {
     initFilter() {
       this.filterInfo = JSON.parse(JSON.stringify(this.dataJson));
       this.dataJson.map(item => {
-        this.$set(this.filterData, item.key, null);
+        const isArray = item.type === "el-checkbox-group";
+        let initValue = isArray ? [] : null;
+        this.$set(this.filterData, item.key, initValue);
         // this.filterData[item.key] = null;
       });
     }

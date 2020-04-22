@@ -23,34 +23,36 @@ export default {
       dataJson: [
         {
           label: "名称",
-          type: "el-radio-group", // form类型 (为element的组件名)
-          optionType: "button",
+          type: "el-select", // form类型 (为element的组件名)
+          key: "name",
+          optionType: "",
           // ele配置项
           config: {
             placeholder: "请输入名称",
             type: "", // 表单组件名称, 如. textarea
-            clearable: true,
-            border: true,
-            maxlength: false,
-            minlength: false,
-            autosize: false,
-            autocomplete: false,
-            size: "",
-            rows: 4, // 默认1
-            "show-password": false,
-            "suffix-icon": false,
-            "prefix-icon": false
+            multiple: true,
+            clearable: true
+            // maxlength: false,
+            // minlength: false,
+            // autosize: false,
+            // size: "",
+            // rows: 4, // 默认1
+            // "show-password": false,
+            // "suffix-icon": false,
+            // "prefix-icon": false
             // 所有slot配置项
             // slot: {
             //   prepend: "", //复合型输入框-前置
             //   append: "" //复合型输入框-后置
             // }
           },
+
           // 选项data
           options: [
             {
               label: "选项一",
               value: "1"
+              // 定制化option配置
             },
             {
               label: "选项二",
