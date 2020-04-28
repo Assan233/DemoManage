@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # some-demo
 
 ## Project setup
