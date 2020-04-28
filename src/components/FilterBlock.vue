@@ -6,20 +6,9 @@
       class="filter-item"
     >
       <div class="item-label">{{ item.label }}</div>
-      <!-- input -->
-      <el-input
-        v-if="item.type === 'el-input'"
-        v-model="filterData[item.key]"
-        v-bind="item.config"
-        class="item-input"
-        @change="
-          $emit('change', filterData, filterData[item.key], item.key, index)
-        "
-      ></el-input>
-
-      <!-- radio-->
+      <!-- Radio-->
       <el-radio-group
-        v-else-if="item.type === 'el-radio-group'"
+        v-if="item.type === 'el-radio-group'"
         v-model="filterData[item.key]"
         v-bind="item.config"
         class="item-input"
@@ -35,7 +24,6 @@
             >{{ option.name }}</el-radio-button
           >
         </template>
-
         <template v-else>
           <el-radio
             v-for="option in item.options"
@@ -46,7 +34,7 @@
         </template>
       </el-radio-group>
 
-      <!-- checkbox-->
+      <!-- Checkbox-->
       <el-checkbox-group
         v-else-if="item.type === 'el-checkbox-group'"
         v-model="filterData[item.key]"
@@ -74,7 +62,19 @@
           >
         </template>
       </el-checkbox-group>
-      <!-- input-number -->
+
+      <!-- Input  -->
+      <el-input
+        v-else-if="item.type === 'el-input'"
+        v-model="filterData[item.key]"
+        v-bind="item.config"
+        class="item-input"
+        @change="
+          $emit('change', filterData, filterData[item.key], item.key, index)
+        "
+      ></el-input>
+
+      <!-- InputNumber  -->
       <el-input-number
         v-else-if="item.type === 'el-input-number'"
         v-model="filterData[item.key]"
@@ -85,7 +85,7 @@
         "
       ></el-input-number>
 
-      <!-- select -->
+      <!-- Select -->
       <el-select
         v-else-if="item.type === 'el-select'"
         v-model="filterData[item.key]"
@@ -95,13 +95,79 @@
           $emit('change', filterData, filterData[item.key], item.key, index)
         "
       >
-        <el-option
-          v-for="option in item.options"
-          :key="option.label"
-          v-bind="option"
-        ></el-option>
+        <div v-for="group in item.options" :key="group.label">
+          <template v-if="!group.options">
+            <el-option v-bind="group"></el-option>
+          </template>
+          <template v-else>
+            <el-option-group v-bind="group">
+              <el-option
+                v-for="option in group.options"
+                :key="option.label"
+                v-bind="option"
+              >
+              </el-option>
+            </el-option-group>
+          </template>
+        </div>
       </el-select>
 
+      <!-- Cascader -->
+      <el-cascader
+        v-else-if="item.type === 'el-cascader'"
+        v-model="filterData[item.key]"
+        v-bind="item.config"
+        class="item-input"
+        @change="
+          $emit('change', filterData, filterData[item.key], item.key, index)
+        "
+      >
+      </el-cascader>
+
+      <!-- Switch -->
+      <el-switch
+        v-else-if="item.type === 'el-switch'"
+        v-model="filterData[item.key]"
+        v-bind="item.config"
+        class="item-input"
+        @change="
+          $emit('change', filterData, filterData[item.key], item.key, index)
+        "
+      >
+      </el-switch>
+
+      <!-- TimePicker   -->
+      <el-time-select
+        v-else-if="item.type === 'el-time-select'"
+        v-model="filterData[item.key]"
+        v-bind="item.config"
+        @change="
+          $emit('change', filterData, filterData[item.key], item.key, index)
+        "
+      >
+      </el-time-select>
+
+      <el-time-picker
+        v-else-if="item.type === 'el-time-picker'"
+        v-model="filterData[item.key]"
+        v-bind="item.config"
+        @change="
+          $emit('change', filterData, filterData[item.key], item.key, index)
+        "
+      >
+      </el-time-picker>
+
+      <!-- DatePicker    -->
+      <el-date-picker
+        v-else-if="item.type === 'el-date-picker'"
+        v-model="filterData[item.key]"
+        v-bind="item.config"
+        @change="
+          $emit('change', filterData, filterData[item.key], item.key, index)
+        "
+      >
+      </el-date-picker>
+      <slot></slot>
       <h3>
         {{ filterData[item.key] }}
       </h3>
@@ -122,42 +188,32 @@ export default {
   data() {
     return {
       filterData: {}, // 筛选数据对象
-      filterInfo: null,
-      types: [
-        "el-radio-group",
-        "el-checkbox-group",
-        "el-input",
-        "el-input-number",
-        "el-select",
-        "el-cascader",
-        "el-switch",
-        "el-slider",
-        "el-time-picker",
-        "el-date-picker",
-        "el-rate"
-      ]
+      filterInfo: null
     };
   },
   created() {
     this.initFilter();
   },
   methods: {
+    // 组件初始化
     initFilter() {
       this.filterInfo = JSON.parse(JSON.stringify(this.dataJson));
       this.dataJson.map(item => {
-        const isArray = item.type === "el-checkbox-group";
-        let initValue = isArray ? [] : null;
-        this.$set(this.filterData, item.key, initValue);
-        // this.filterData[item.key] = null;
+        const initData = this.initData(item);
+        this.$set(this.filterData, item.key, initData);
       });
+    },
+    // 确定初始数据类型
+    initData(data) {
+      const isArray =
+        data.type === "el-checkbox-group" ||
+        data.type === "el-cascader" ||
+        data.type === "el-time-select" ||
+        data.type === "el-time-picker" ||
+        data.type === "el-date-picker" ||
+        (data.config && data.config.multiple === true);
+      return isArray ? [] : undefined;
     }
-    // eventHappened(key) {
-    //   console.log(key);
-    //   // console.log(this.filterData[key]);
-    //   // console.log(this.dataJson[0].config.event.change);
-    //   // console.log(self);
-    //   this.dataJson[0].config.event.change(key);
-    // }
   }
 };
 </script>

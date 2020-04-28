@@ -6,6 +6,7 @@
       </el-col>
       <el-col :span="20" class="right">
         <filter-block :data-json="dataJson" @change="handleFilterChange">
+          <el-button @click="onClick">button</el-button>
         </filter-block>
       </el-col>
     </el-row>
@@ -22,68 +23,274 @@ export default {
       str: "Assan",
       dataJson: [
         {
+          label: "编号",
+          type: "el-input",
+          key: "num",
+          config: {}
+        },
+        {
           label: "名称",
-          type: "el-select", // form类型 (为element的组件名)
+          type: "el-cascader", // form类型 (为element的组件名)
           key: "name",
-          optionType: "",
+          // optionType: "button",
           // ele配置项
           config: {
             placeholder: "请输入名称",
-            type: "", // 表单组件名称, 如. textarea
-            multiple: true,
-            clearable: true
-            // maxlength: false,
-            // minlength: false,
-            // autosize: false,
-            // size: "",
-            // rows: 4, // 默认1
-            // "show-password": false,
-            // "suffix-icon": false,
-            // "prefix-icon": false
-            // 所有slot配置项
-            // slot: {
-            //   prepend: "", //复合型输入框-前置
-            //   append: "" //复合型输入框-后置
-            // }
-          },
-
+            props: {
+              multiple: true
+            },
+            options: [
+              {
+                value: "zhinan",
+                label: "指南",
+                children: [
+                  {
+                    value: "shejiyuanze",
+                    label: "设计原则",
+                    children: [
+                      {
+                        value: "yizhi",
+                        label: "一致"
+                      },
+                      {
+                        value: "fankui",
+                        label: "反馈"
+                      },
+                      {
+                        value: "xiaolv",
+                        label: "效率"
+                      },
+                      {
+                        value: "kekong",
+                        label: "可控"
+                      }
+                    ]
+                  },
+                  {
+                    value: "daohang",
+                    label: "导航",
+                    children: [
+                      {
+                        value: "cexiangdaohang",
+                        label: "侧向导航"
+                      },
+                      {
+                        value: "dingbudaohang",
+                        label: "顶部导航"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                value: "zujian",
+                label: "组件",
+                children: [
+                  {
+                    value: "basic",
+                    label: "Basic",
+                    children: [
+                      {
+                        value: "layout",
+                        label: "Layout 布局"
+                      },
+                      {
+                        value: "color",
+                        label: "Color 色彩"
+                      },
+                      {
+                        value: "typography",
+                        label: "Typography 字体"
+                      },
+                      {
+                        value: "icon",
+                        label: "Icon 图标"
+                      },
+                      {
+                        value: "button",
+                        label: "Button 按钮"
+                      }
+                    ]
+                  },
+                  {
+                    value: "form",
+                    label: "Form",
+                    children: [
+                      {
+                        value: "radio",
+                        label: "Radio 单选框"
+                      },
+                      {
+                        value: "checkbox",
+                        label: "Checkbox 多选框"
+                      },
+                      {
+                        value: "input",
+                        label: "Input 输入框"
+                      },
+                      {
+                        value: "input-number",
+                        label: "InputNumber 计数器"
+                      },
+                      {
+                        value: "select",
+                        label: "Select 选择器"
+                      },
+                      {
+                        value: "cascader",
+                        label: "Cascader 级联选择器"
+                      },
+                      {
+                        value: "switch",
+                        label: "Switch 开关"
+                      },
+                      {
+                        value: "slider",
+                        label: "Slider 滑块"
+                      },
+                      {
+                        value: "time-picker",
+                        label: "TimePicker 时间选择器"
+                      },
+                      {
+                        value: "date-picker",
+                        label: "DatePicker 日期选择器"
+                      },
+                      {
+                        value: "datetime-picker",
+                        label: "DateTimePicker 日期时间选择器"
+                      },
+                      {
+                        value: "upload",
+                        label: "Upload 上传"
+                      },
+                      {
+                        value: "rate",
+                        label: "Rate 评分"
+                      },
+                      {
+                        value: "form",
+                        label: "Form 表单"
+                      }
+                    ]
+                  },
+                  {
+                    value: "data",
+                    label: "Data",
+                    children: [
+                      {
+                        value: "table",
+                        label: "Table 表格"
+                      },
+                      {
+                        value: "tag",
+                        label: "Tag 标签"
+                      },
+                      {
+                        value: "progress",
+                        label: "Progress 进度条"
+                      },
+                      {
+                        value: "tree",
+                        label: "Tree 树形控件"
+                      },
+                      {
+                        value: "pagination",
+                        label: "Pagination 分页"
+                      },
+                      {
+                        value: "badge",
+                        label: "Badge 标记"
+                      }
+                    ]
+                  },
+                  {
+                    value: "notice",
+                    label: "Notice",
+                    children: [
+                      {
+                        value: "alert",
+                        label: "Alert 警告"
+                      },
+                      {
+                        value: "loading",
+                        label: "Loading 加载"
+                      },
+                      {
+                        value: "message",
+                        label: "Message 消息提示"
+                      },
+                      {
+                        value: "message-box",
+                        label: "MessageBox 弹框"
+                      },
+                      {
+                        value: "notification",
+                        label: "Notification 通知"
+                      }
+                    ]
+                  },
+                  {
+                    value: "navigation",
+                    label: "Navigation",
+                    children: [
+                      {
+                        value: "menu",
+                        label: "NavMenu 导航菜单"
+                      },
+                      {
+                        value: "tabs",
+                        label: "Tabs 标签页"
+                      },
+                      {
+                        value: "breadcrumb",
+                        label: "Breadcrumb 面包屑"
+                      },
+                      {
+                        value: "dropdown",
+                        label: "Dropdown 下拉菜单"
+                      },
+                      {
+                        value: "steps",
+                        label: "Steps 步骤条"
+                      }
+                    ]
+                  },
+                  {
+                    value: "others",
+                    label: "Others",
+                    children: [
+                      {
+                        value: "dialog",
+                        label: "Dialog 对话框"
+                      },
+                      {
+                        value: "tooltip",
+                        label: "Tooltip 文字提示"
+                      },
+                      {
+                        value: "popover",
+                        label: "Popover 弹出框"
+                      },
+                      {
+                        value: "card",
+                        label: "Card 卡片"
+                      },
+                      {
+                        value: "carousel",
+                        label: "Carousel 走马灯"
+                      },
+                      {
+                        value: "collapse",
+                        label: "Collapse 折叠面板"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
           // 选项data
-          options: [
-            {
-              label: "选项一",
-              value: "1",
-              disabled: true,
-              options: [
-                {
-                  label: "选项四",
-                  value: "4"
-                },
-                {
-                  label: "选项五",
-                  value: "5",
-                  disabled: true
-                },
-                {
-                  label: "选项6",
-                  value: "6",
-                  disabled: true
-                }
-              ]
-              // 定制化option配置
-            },
-            {
-              label: "选项二",
-              value: "2"
-            },
-            {
-              label: "选项三",
-              value: "3"
-            },
-            {
-              label: "选项四",
-              value: "4"
-            }
-          ]
         }
       ]
     };
@@ -91,6 +298,12 @@ export default {
   methods: {
     handleFilterChange(filterData, value, key) {
       console.log(filterData, value, key);
+    },
+    handleRemote(value, key) {
+      console.log(value, key);
+    },
+    onClick() {
+      console.log(this.filterData);
     }
   }
 };
@@ -102,5 +315,8 @@ export default {
 }
 .right {
   /* border: 1px dashed darkgray; */
+}
+.red {
+  color: aquamarine;
 }
 </style>
