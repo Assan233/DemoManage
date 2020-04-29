@@ -1,12 +1,28 @@
 <template>
   <div>
     <el-row class="wrap">
-      <el-col :span="4" class="left">
+      <el-col :span="6" class="left">
         <h3>Title</h3>
+        <el-tooltip
+          effect="dark"
+          content="Title"
+          placement="top"
+          class="title-tips"
+        >
+          <i class="el-icon-question"></i>
+        </el-tooltip>
       </el-col>
-      <el-col :span="20" class="right">
-        <filter-block :data-json="dataJson" @change="handleFilterChange">
-          <el-button @click="onClick">button</el-button>
+      <el-col :span="18" class="right">
+        <filter-block
+          :data-json="dataJson"
+          :has-clear="true"
+          @change="handleFilterChange"
+        >
+          <template v-slot="slotProps">
+            <el-button type="primary" @click="onClick(slotProps)"
+              >Create</el-button
+            >
+          </template>
         </filter-block>
       </el-col>
     </el-row>
@@ -26,6 +42,24 @@ export default {
           label: "编号",
           type: "el-input",
           key: "num",
+          config: {}
+        },
+        {
+          label: "编号",
+          type: "el-input",
+          key: "num2",
+          config: {}
+        },
+        {
+          label: "编号",
+          type: "el-input",
+          key: "num3",
+          config: {}
+        },
+        {
+          label: "编号",
+          type: "el-input",
+          key: "num4",
           config: {}
         },
         {
@@ -302,21 +336,28 @@ export default {
     handleRemote(value, key) {
       console.log(value, key);
     },
-    onClick() {
-      console.log(this.filterData);
+    onClick(slotProps) {
+      console.log(slotProps);
     }
   }
 };
 </script>
 
-<style>
+<style scoped lang="scss">
 .wrap {
+  display: flex;
   border: 1px dashed darkgray;
 }
-.right {
-  /* border: 1px dashed darkgray; */
-}
-.red {
-  color: aquamarine;
+.left {
+  .title-tips,
+  h3 {
+    top: calc(50% - 12px);
+    position: relative;
+    display: inline-block;
+    margin: 0 4px;
+  }
+  .title-tips {
+    color: #ccc;
+  }
 }
 </style>

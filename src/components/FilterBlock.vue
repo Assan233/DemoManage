@@ -5,7 +5,7 @@
       :key="item.key"
       class="filter-item"
     >
-      <div class="item-label">{{ item.label }}</div>
+      <div class="item-label">{{ item.label }}：</div>
       <!-- Radio-->
       <el-radio-group
         v-if="item.type === 'el-radio-group'"
@@ -167,26 +167,49 @@
         "
       >
       </el-date-picker>
-      <slot></slot>
-      <h3>
+
+      <!-- <h3>
         {{ filterData[item.key] }}
-      </h3>
+      </h3> -->
     </div>
+
+    <!-- 操作区 -->
+
+    <!-- 清空按钮 -->
+    <el-button
+      v-if="hasClear"
+      class="el-icon-refresh-right"
+      type="primary"
+      @click="handleClear"
+    ></el-button>
+
+    <!-- slot内容 -->
+    <slot :filterData="filterData"></slot>
   </div>
 </template>
 
 <script>
+function deepClone(data) {
+  return JSON.parse(JSON.stringify(data));
+}
 export default {
   name: "FilterBlock",
   components: {},
   props: {
+    // filter表单配置项
     dataJson: {
       type: Array,
       default: () => []
+    },
+    // 是否显示clear按钮
+    hasClear: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
     return {
+      nullFilterData: {},
       filterData: {}, // 筛选数据对象
       filterInfo: null
     };
@@ -195,13 +218,21 @@ export default {
     this.initFilter();
   },
   methods: {
-    // 组件初始化
+    // 数据初始化
     initFilter() {
-      this.filterInfo = JSON.parse(JSON.stringify(this.dataJson));
       this.dataJson.map(item => {
+        // 设置默认值
+        item.config.size =
+          item.config && item.config.size ? item.config.size : "small";
+
         const initData = this.initData(item);
         this.$set(this.filterData, item.key, initData);
+        // 备份一份初始过滤数据, 方便清空
+        this.nullFilterData[item.key] = Array.isArray(initData)
+          ? []
+          : undefined; // 防止引用同一个initData, 产生对象引用问题
       });
+      this.filterInfo = deepClone(this.dataJson);
     },
     // 确定初始数据类型
     initData(data) {
@@ -213,21 +244,24 @@ export default {
         data.type === "el-date-picker" ||
         (data.config && data.config.multiple === true);
       return isArray ? [] : undefined;
+    },
+    // 重置搜索条件
+    handleClear() {
+      this.filterData = { ...this.nullFilterData };
     }
   }
 };
 </script>
 <style scoped lang="scss">
 .filter-wrap {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
   width: 100%;
+  text-align: right;
   .filter-item {
-    padding: 8px;
+    padding: 0 8px 8px 0;
+    display: inline-block;
     .item-label {
       display: inline-block;
-      margin-right: 8px;
+      // margin-right: 8px;
     }
     .item-input {
       display: inline-block;
