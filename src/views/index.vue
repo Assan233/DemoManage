@@ -1,42 +1,33 @@
 <template>
   <div>
-    <el-row class="wrap">
-      <el-col :span="6" class="left">
-        <h3>Title</h3>
-        <el-tooltip
-          effect="dark"
-          content="Title"
-          placement="top"
-          class="title-tips"
+    <filter-block
+      :data-json="dataJson"
+      :title-info="titleInfo"
+      :has-clear="true"
+      @change="handleFilterChange"
+    >
+      <!-- slot -->
+      <template v-slot="slotProps">
+        <el-button size="small" type="primary" @click="onClick(slotProps)"
+          >Create</el-button
         >
-          <i class="el-icon-question"></i>
-        </el-tooltip>
-      </el-col>
-      <el-col :span="18" class="right">
-        <filter-block
-          :data-json="dataJson"
-          :has-clear="true"
-          @change="handleFilterChange"
-        >
-          <template v-slot="slotProps">
-            <el-button size="small" type="primary" @click="onClick(slotProps)"
-              >Create</el-button
-            >
-          </template>
-        </filter-block>
-      </el-col>
-    </el-row>
+      </template>
+    </filter-block>
   </div>
 </template>
 
 <script>
-import FilterBlock from "@/components/FilterBlock";
+import FilterBlock from "@/components/FilterBlock/index";
 
 export default {
   components: { FilterBlock },
   data() {
     return {
       str: "Assan",
+      titleInfo: {
+        title: "Title",
+        summary: "title介绍"
+      },
       dataJson: [
         {
           label: "编号1",
@@ -334,9 +325,6 @@ export default {
   methods: {
     handleFilterChange(filterData, value, key) {
       console.log(filterData, value, key);
-    },
-    handleRemote(value, key) {
-      console.log(value, key);
     },
     onClick(slotProps) {
       console.log(slotProps);
