@@ -19,7 +19,7 @@
           @change="handleFilterChange"
         >
           <template v-slot="slotProps">
-            <el-button type="primary" @click="onClick(slotProps)"
+            <el-button size="small" type="primary" @click="onClick(slotProps)"
               >Create</el-button
             >
           </template>
@@ -39,25 +39,27 @@ export default {
       str: "Assan",
       dataJson: [
         {
-          label: "编号",
+          label: "编号1",
           type: "el-input",
           key: "num",
           config: {}
         },
         {
-          label: "编号",
+          label: "编号2",
           type: "el-input",
           key: "num2",
+          isAdvanced: true,
           config: {}
         },
         {
-          label: "编号",
+          label: "编号3",
           type: "el-input",
           key: "num3",
+          isAdvanced: true,
           config: {}
         },
         {
-          label: "编号",
+          label: "编号4",
           type: "el-input",
           key: "num4",
           config: {}
