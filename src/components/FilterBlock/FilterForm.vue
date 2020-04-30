@@ -2,6 +2,9 @@
   <div class="filter-wrap">
     <div
       v-for="(item, index) in filterInfo"
+      v-show="
+        item.isAdvanced ? isAdvancedFrom : item.config && item.config.show
+      "
       :key="item.key"
       class="filter-item"
     >
@@ -175,9 +178,20 @@
 
     <!-- 操作区 -->
 
+    <!-- 高级搜索按钮 -->
+    <el-link
+      :underline="false"
+      size="small"
+      type="primary"
+      class="advanced-link"
+      @click="isAdvancedFrom = !isAdvancedFrom"
+      >高级搜索</el-link
+    >
+
     <!-- 清空按钮 -->
     <el-button
       v-if="hasClear"
+      size="small"
       class="el-icon-refresh-right"
       type="primary"
       @click="handleClear"
@@ -209,9 +223,11 @@ export default {
   },
   data() {
     return {
-      nullFilterData: {},
+      nullFilterData: {}, //初始筛选数据对象-用于数据清空
       filterData: {}, // 筛选数据对象
-      filterInfo: null
+      filterInfo: null,
+      isAdvancedBtn: false, // 是否显示高级按钮
+      isAdvancedFrom: false // 控制显示高级表单元素
     };
   },
   created() {
@@ -224,6 +240,8 @@ export default {
         // 设置默认值
         item.config.size =
           item.config && item.config.size ? item.config.size : "small";
+        item.config.show =
+          item.config && item.config.show ? item.config.size : true;
 
         const initData = this.initData(item);
         this.$set(this.filterData, item.key, initData);
@@ -261,12 +279,14 @@ export default {
     display: inline-block;
     .item-label {
       display: inline-block;
-      // margin-right: 8px;
     }
     .item-input {
       display: inline-block;
       width: auto;
     }
+  }
+  .advanced-link {
+    margin: 0 10px;
   }
 }
 </style>
