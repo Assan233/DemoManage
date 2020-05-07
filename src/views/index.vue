@@ -1,59 +1,129 @@
 <template>
-  <div>
-    <filter-block
-      :data-json="dataJson"
+  <div class="index">
+    <filter-container
+      :data-list="dataList"
       :title-info="titleInfo"
+      :span="span"
       :has-clear="true"
       @change="handleFilterChange"
+      @filterClear="handleClear"
     >
-      <!-- slot -->
-      <template v-slot="slotProps">
+      <!-- 操作功能-slot -->
+      <template v-slot:operateSlot="slotProps">
         <el-button size="small" type="primary" @click="onClick(slotProps)"
           >Create</el-button
         >
       </template>
-    </filter-block>
+    </filter-container>
   </div>
 </template>
 
 <script>
-import FilterBlock from "@/components/FilterBlock/index";
+import FilterContainer from "@/components/FilterContainer/index";
 
 export default {
-  components: { FilterBlock },
+  components: { FilterContainer },
   data() {
     return {
-      str: "Assan",
+      input: "",
       titleInfo: {
-        title: "Title",
+        title: "标题",
         summary: "title介绍"
       },
-      dataJson: [
+      span: [3, 21], //控制栅格布局
+      dataList: [
         {
-          label: "编号1",
+          label: "输入框",
           type: "el-input",
           key: "num",
           config: {}
         },
         {
-          label: "编号2",
-          type: "el-input",
+          label: "单选框",
+          isAdvanced: true,
+          optionType: "button",
+          type: "el-radio-group",
           key: "num2",
-          isAdvanced: true,
-          config: {}
+          config: {},
+          options: [
+            {
+              label: "checked1",
+              name: "选项1"
+            },
+            {
+              label: "checked2",
+              name: "选项2",
+              disabled: true
+            },
+            {
+              label: "checked3",
+              name: "选项3"
+            }
+          ]
         },
         {
-          label: "编号3",
-          type: "el-input",
+          label: "日期时间选择",
+          type: "el-date-picker",
           key: "num3",
-          isAdvanced: true,
-          config: {}
+          config: {
+            type: "datetimerange",
+            "range-separator": "至",
+            "start-placeholder": "开始日期",
+            "end-placeholder": "结束日期",
+            "picker-options": {
+              shortcuts: [
+                {
+                  text: "最近一周",
+                  onClick(picker) {
+                    const end = new Date();
+                    const start = new Date();
+                    start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                    picker.$emit("pick", [start, end]);
+                  }
+                },
+                {
+                  text: "最近一个月",
+                  onClick(picker) {
+                    const end = new Date();
+                    const start = new Date();
+                    start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+                    picker.$emit("pick", [start, end]);
+                  }
+                },
+                {
+                  text: "最近三个月",
+                  onClick(picker) {
+                    const end = new Date();
+                    const start = new Date();
+                    start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+                    picker.$emit("pick", [start, end]);
+                  }
+                }
+              ]
+            }
+          }
         },
         {
-          label: "编号4",
-          type: "el-input",
+          label: "选择器",
+          type: "el-select",
+          isAdvanced: true,
           key: "num4",
-          config: {}
+          config: {},
+          options: [
+            {
+              value: "checked1",
+              label: "选项1"
+            },
+            {
+              value: "checked2",
+              label: "选项2",
+              disabled: true
+            },
+            {
+              value: "checked3",
+              label: "选项3"
+            }
+          ]
         },
         {
           label: "名称",
@@ -326,8 +396,15 @@ export default {
     handleFilterChange(filterData, value, key) {
       console.log(filterData, value, key);
     },
+    handleClear(nullFilterData) {
+      console.log(nullFilterData);
+      this.input = "";
+    },
     onClick(slotProps) {
       console.log(slotProps);
+    },
+    onChange(slotProps) {
+      console.log(this.input);
     }
   }
 };
@@ -349,5 +426,9 @@ export default {
   .title-tips {
     color: #ccc;
   }
+}
+.slot-input {
+  display: inline-block;
+  width: auto;
 }
 </style>

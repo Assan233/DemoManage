@@ -1,9 +1,10 @@
 <template>
   <div>
     <el-row class="wrap">
-      <el-col :span="6" class="left">
+      <el-col :span="span[0]" class="left">
         <h3>{{ titleInfo.title }}</h3>
         <el-tooltip
+          v-if="titleInfo.summary"
           effect="dark"
           :content="titleInfo.summary"
           placement="top"
@@ -12,14 +13,21 @@
           <i class="el-icon-question"></i>
         </el-tooltip>
       </el-col>
-      <el-col :span="18" class="right">
+      <el-col :span="span[1]" class="right">
         <filter-form
-          :data-json="dataJson"
-          :has-clear="true"
+          :data-list="dataList"
+          :has-clear="hasClear"
           @change="handleFilterChange"
+          @filterClear="handleFilterClear"
         >
-          <template v-slot="slotProps">
-            <slot :filterData="slotProps.filterData"></slot>
+          <!-- 筛选功能-表单元素slot -->
+          <template v-slot:formSlot="slotProps">
+            <slot :filterData="slotProps.filterData" name="formSlot"></slot>
+          </template>
+
+          <!-- 操作功能-slot -->
+          <template v-slot:operateSlot="slotProps">
+            <slot :filterData="slotProps.filterData" name="operateSlot"></slot>
           </template>
         </filter-form>
       </el-col>
@@ -28,13 +36,13 @@
 </template>
 
 <script>
-import FilterForm from "@/components/FilterBlock/FilterForm";
+import FilterForm from "@/components/FilterContainer/FilterForm";
 
 export default {
   components: { FilterForm },
   props: {
     // filter表单配置项
-    dataJson: {
+    dataList: {
       type: Array,
       default: () => []
     },
@@ -50,6 +58,11 @@ export default {
     hasClear: {
       type: Boolean,
       default: false
+    },
+    // 控制组件栅格布局
+    span: {
+      type: Array,
+      default: () => [3, 21]
     }
   },
   data() {
@@ -58,6 +71,9 @@ export default {
   methods: {
     handleFilterChange(filterData, value, key, index) {
       this.$emit("change", filterData, value, key, index);
+    },
+    handleFilterClear(nullFilterData) {
+      this.$emit("filterClear", nullFilterData);
     }
   }
 };
@@ -66,7 +82,11 @@ export default {
 <style scoped lang="scss">
 .wrap {
   display: flex;
-  border: 1px dashed darkgray;
+  padding: 20px 25px 12px;
+  background-color: #fff;
+  border-bottom: 1px solid #e9e9e9;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
 }
 .left {
   .title-tips,
