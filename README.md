@@ -1,37 +1,14 @@
-# filter-container
 
-## Project setup
-```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
-FilterContainer文档
-事件:
+#FilterContainer文档
+##事件:
 1.	@change: filter-item的change事件触发, 触发change事件
 返回参数:  filterData, value, key, index
 
 2.	@filterClear: 点击重置filterData时, 触发filterClear, 
 返回参数:  值为空的filterData
-配置:
+##配置:
 (*)为必配置项
-1.	dataJson: 表单元素的配置详情(Array)
+###1.	dataJson: 表单元素的配置详情(Array)
 1)	label(*): 表单元素label
 值: String
 2)	key(*): 表单元素绑定的key
@@ -58,26 +35,26 @@ el-date-picker ]
 值: Object
 8)	options: 表单元素二级的elementUI配置项, 如果需要设置option分组, 可以options嵌套options, 如<el-select>的option分组
 值: Array
-注意: 
+###注意: 
 1.	option配置选中值和名称的key必须和ele文档一致, 如 {label: “名称”, value: “name”}
 2.	如果dataJson中有异步获取的内容(如option),建议将dataJson定义为计算属性, 这样依赖更新的时候, dataJson也会自动更新
-2.	titleInfo: 标题的配置项
+##2.	titleInfo: 标题的配置项
 值: Object, { title:标题 summary: 说明内容}
-3.	span: 组件栅格占比
+##3.	span: 组件栅格占比
 值: Array, [left, right]
-4.	has-clear: 是否需要重置按钮
+##4.	has-clear: 是否需要重置按钮
 值: Boolean, true/是
 
  
 
 
-Slot
+##Slot
 1.	operateSlot: 
 1)	筛选区域右侧slot, 一般是操作类按钮, 可通过v-slot: operateSlot ="slotProps" 获取当前filterData
 2.	formSlot: 
 1)	筛选表单slot, 可通过v-slot: formSlot ="slotProps" 获取当前filterData
 
-注意事项
+##注意事项
 Radio单选
 1.	配置radio的options时, 需要注意配置label为radio的绑定值, name为radio的名称(见Ele Radio Attributes文档)
 
