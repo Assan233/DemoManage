@@ -1,13 +1,26 @@
 <template>
   <div class="index">
     <filter-container
-      :data-list="dataList"
+      :data-json="dataJson"
       :title-info="titleInfo"
       :span="span"
       :has-clear="true"
       @change="handleFilterChange"
       @filterClear="handleClear"
     >
+      <!-- 表单元素-slot
+      <template v-slot:formSlot>
+        <div class="form-slot">
+          <span class="slot-label">form插槽：</span>
+          <el-input
+            v-model="input"
+            size="small"
+            class="slot-content"
+            placeholder="请输入内容"
+          ></el-input>
+        </div>
+      </template> -->
+
       <!-- 操作功能-slot -->
       <template v-slot:operateSlot="slotProps">
         <el-button size="small" type="primary" @click="onClick(slotProps)"
@@ -31,11 +44,17 @@ export default {
         summary: "title介绍"
       },
       span: [3, 21], //控制栅格布局
-      dataList: [
+      dataJson: [
         {
           label: "输入框",
           type: "el-input",
           key: "num",
+          config: {}
+        },
+        {
+          label: "开关",
+          type: "el-switch",
+          key: "es",
           config: {}
         },
         {
@@ -405,6 +424,16 @@ export default {
     },
     onChange(slotProps) {
       console.log(this.input);
+    },
+    test() {
+      setTimeout(() => {
+        let dom = document.getElementsByTagName("input");
+        dom.forEach(item => {
+          if (item.placeholder === "请选择时间段") {
+            console.log(item);
+          }
+        });
+      }, 2000);
     }
   }
 };
@@ -427,8 +456,17 @@ export default {
     color: #ccc;
   }
 }
-.slot-input {
+.form-slot {
+  padding: 0 12px 8px 0;
   display: inline-block;
-  width: auto;
+  .slot-label {
+    display: inline-block;
+    font-size: 14px;
+    color: #606266;
+  }
+  .slot-content {
+    display: inline-block;
+    width: auto;
+  }
 }
 </style>

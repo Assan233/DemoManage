@@ -14,6 +14,7 @@
         <el-radio-group
           v-if="item.type === 'el-radio-group'"
           v-model="filterData[item.key]"
+          :style="{ width: item.itemWidth ? item.itemWidth + 'px' : 'auto' }"
           v-bind="item.config"
           class="item-input"
           @change="
@@ -43,6 +44,7 @@
           v-else-if="item.type === 'el-checkbox-group'"
           v-model="filterData[item.key]"
           v-bind="item.config"
+          :style="{ width: item.itemWidth ? item.itemWidth + 'px' : 'auto' }"
           class="item-input"
           @change="
             $emit('change', filterData, filterData[item.key], item.key, index)
@@ -71,6 +73,7 @@
         <el-input
           v-else-if="item.type === 'el-input'"
           v-model="filterData[item.key]"
+          :style="{ width: item.itemWidth ? item.itemWidth + 'px' : 'auto' }"
           v-bind="item.config"
           class="item-input"
           @change="
@@ -82,6 +85,7 @@
         <el-input-number
           v-else-if="item.type === 'el-input-number'"
           v-model="filterData[item.key]"
+          :style="{ width: item.itemWidth ? item.itemWidth + 'px' : 'auto' }"
           v-bind="item.config"
           class="item-input"
           @change="
@@ -93,6 +97,7 @@
         <el-select
           v-else-if="item.type === 'el-select'"
           v-model="filterData[item.key]"
+          :style="{ width: item.itemWidth ? item.itemWidth + 'px' : 'auto' }"
           v-bind="item.config"
           class="item-input"
           @change="
@@ -120,6 +125,7 @@
         <el-cascader
           v-else-if="item.type === 'el-cascader'"
           v-model="filterData[item.key]"
+          :style="{ width: item.itemWidth ? item.itemWidth + 'px' : 'auto' }"
           v-bind="item.config"
           class="item-input"
           @change="
@@ -132,6 +138,7 @@
         <el-switch
           v-else-if="item.type === 'el-switch'"
           v-model="filterData[item.key]"
+          :style="{ width: item.itemWidth ? item.itemWidth + 'px' : 'auto' }"
           v-bind="item.config"
           class="item-input"
           @change="
@@ -144,6 +151,7 @@
         <el-time-select
           v-else-if="item.type === 'el-time-select'"
           v-model="filterData[item.key]"
+          :style="{ width: item.itemWidth ? item.itemWidth + 'px' : 'auto' }"
           v-bind="item.config"
           @change="
             $emit('change', filterData, filterData[item.key], item.key, index)
@@ -154,6 +162,7 @@
         <el-time-picker
           v-else-if="item.type === 'el-time-picker'"
           v-model="filterData[item.key]"
+          :style="{ width: item.itemWidth ? item.itemWidth + 'px' : 'auto' }"
           v-bind="item.config"
           @change="
             $emit('change', filterData, filterData[item.key], item.key, index)
@@ -165,6 +174,7 @@
         <el-date-picker
           v-else-if="item.type === 'el-date-picker'"
           v-model="filterData[item.key]"
+          :style="{ width: item.itemWidth ? item.itemWidth + 'px' : 'auto' }"
           v-bind="item.config"
           @change="
             $emit('change', filterData, filterData[item.key], item.key, index)
@@ -227,7 +237,7 @@ export default {
   components: {},
   props: {
     // filter表单配置项
-    dataList: {
+    dataJson: {
       type: Array,
       default: () => []
     },
@@ -247,7 +257,7 @@ export default {
     };
   },
   watch: {
-    dataList: {
+    dataJson: {
       handler(newVal) {
         this.initFilter(newVal);
       },
@@ -257,8 +267,9 @@ export default {
   },
   methods: {
     // 数据初始化
-    initFilter(dataList) {
-      dataList.map(item => {
+    initFilter(dataJson) {
+      dataJson.map(item => {
+        if (!item.config) item.config = {};
         // 如果表单元素配置信息为高级, 显示高级按钮
         if (item.isAdvanced) this.isAdvancedBtn = true;
 
@@ -275,7 +286,7 @@ export default {
           ? []
           : undefined; // 防止引用同一个initData, 产生对象引用问题
       });
-      this.filterInfo = deepClone(dataList);
+      this.filterInfo = deepClone(dataJson);
       // 重新排序, 高级选项排在最后
       this.filterInfo.sort((a, b) => {
         if (a.isAdvanced === true && !b.isAdvanced) {

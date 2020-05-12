@@ -15,7 +15,7 @@
       </el-col>
       <el-col :span="span[1]" class="right">
         <filter-form
-          :data-list="dataList"
+          :data-json="dataJson"
           :has-clear="hasClear"
           @change="handleFilterChange"
           @filterClear="handleFilterClear"
@@ -42,7 +42,7 @@ export default {
   components: { FilterForm },
   props: {
     // filter表单配置项
-    dataList: {
+    dataJson: {
       type: Array,
       default: () => []
     },
@@ -51,7 +51,7 @@ export default {
       type: Object,
       default: () => ({
         title: "",
-        summary: undefined
+        summary: ""
       })
     },
     // 是否显示clear按钮
