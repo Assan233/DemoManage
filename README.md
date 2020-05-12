@@ -65,3 +65,29 @@ Select 选择
 
 Cascader 级联选择器
 1.	根据ele文档, options应该在config配置
+
+
+# filter-container
+
+## Project setup
+```
+npm install
+```
+
+### Compiles and hot-reloads for development
+```
+npm run serve
+```
+
+### Compiles and minifies for production
+```
+npm run build
+```
+
+### Lints and fixes files
+```
+npm run lint
+```
+
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).
