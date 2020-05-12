@@ -8,7 +8,7 @@
       @change="handleFilterChange"
       @filterClear="handleClear"
     >
-      <!-- 表单元素-slot
+      <!-- 表单元素-slot -->
       <template v-slot:formSlot>
         <div class="form-slot">
           <span class="slot-label">form插槽：</span>
@@ -19,7 +19,7 @@
             placeholder="请输入内容"
           ></el-input>
         </div>
-      </template> -->
+      </template>
 
       <!-- 操作功能-slot -->
       <template v-slot:operateSlot="slotProps">
