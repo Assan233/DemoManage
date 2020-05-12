@@ -48,13 +48,13 @@ el-date-picker ]
  
 
 
-##Slot
+## Slot
 1.	operateSlot: 
 1)	筛选区域右侧slot, 一般是操作类按钮, 可通过v-slot: operateSlot ="slotProps" 获取当前filterData
 2.	formSlot: 
 1)	筛选表单slot, 可通过v-slot: formSlot ="slotProps" 获取当前filterData
 
-##注意事项
+## 注意事项
 Radio单选
 1.	配置radio的options时, 需要注意配置label为radio的绑定值, name为radio的名称(见Ele Radio Attributes文档)
 
